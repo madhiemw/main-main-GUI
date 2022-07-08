@@ -1,63 +1,98 @@
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.awt.Label
 import java.awt.Rectangle
 import java.awt.event.FocusListener
 import javax.swing.*
 import javax.swing.table.DefaultTableModel
 import javax.swing.text.JTextComponent
+open class allframe{
+    open fun all_popup(){
+    }
+}
+class frame_notifikasi : allframe() {
+    override fun all_popup() {
+        val wronginput = JLabel("   Incorrect password and user")
+        val submit = JButton("OK")
+        submit.bounds = Rectangle(100,50,100, 50)
+        wronginput.bounds = Rectangle(60,-26,200, 100)
+        val pop_up_frame = JFrame("Notification")
+        pop_up_frame.setSize(300, 200)
+        pop_up_frame.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
+        pop_up_frame.layout = null
+        pop_up_frame.add(wronginput)
+        pop_up_frame.isVisible = true
+        pop_up_frame.add(submit)
+        submit.addActionListener {
+            pop_up_frame.dispose()
+        }
+    }
+}
+class Table_frame :allframe(){
+    override fun all_popup() {
+        val newframe = JFrame("Data Mahasiswa")
+        val printbutton = JButton("Export")
+        //val savebutton = JButton("Save")
+        val tableModel = DefaultTableModel()
+        val table = JTable(tableModel)
+        newframe.setSize(500, 500)
+        newframe.layout = null
+        newframe.isVisible=true
+        //savebutton.bounds= Rectangle(300 ,390,65 ,40)
+        printbutton.bounds = Rectangle(380 ,390,80 ,40)
+        tableModel.addColumn("NIM")
+        tableModel.addColumn("NAMA")
+        tableModel.addColumn("jurusan")
+        tableModel.insertRow(0, arrayOf<Any>("Nama", "NIM", "Jurusan"))
+        tableModel.insertRow(0, arrayOf<Any>("Muhammad adhiem Wicaksna", "A11.2019.11897", "TI"))
+        tableModel.insertRow(0, arrayOf<Any>("Nama", "NIM", "Jurusan"))
+        table.bounds = Rectangle(0, 0, 500, 100)
+        printbutton.addActionListener {
+            table.print()
+        }
+        newframe.add(table)
+        newframe.add(printbutton)
+        //newframe.add(savebutton)
+    }
+}
 
-
-fun main() {
-    // constructor frame 1
-        val myframe = JFrame("LOGIN PAGE")
+class login_page :allframe() {
+    override fun all_popup() {
+    var  allframe = allframe()
+    val myframe = JFrame("LOGIN PAGE")
     myframe.setSize(500, 500)
     myframe.defaultCloseOperation = JFrame.EXIT_ON_CLOSE
     myframe.layout = null
-    val Input_Nama = JTextField()
-    val Input_Nim = JTextField()
-    val Input_jurusan = JTextField("A11.2019.11897")
+    val Input_Password = JPasswordField("")
+    val Input_Nim = JTextField("kandedes")
     val label = JLabel("PBO")
-    val button = JButton("Submit")
-    val isisubmit = Input_Nama.getText() //triger dari if else password dan username
-    // constructor frame 2
-    val newframe = JFrame("kandedes")
-    newframe.setSize(500, 500)
-    newframe.layout = null
-    val print_nama = JLabel(Input_Nama.getText())
-    val header_newframe1 = JLabel("UDINUS")
-    val tableModel = DefaultTableModel()
-    val table = JTable(tableModel)
-    tableModel.addColumn("NIM")
-    tableModel.addColumn("NAMA")
-    tableModel.addColumn("jurusan")
-    tableModel.insertRow(0, arrayOf<Any>("MUHAMMAD ADHIEM WICAKSANAN", "A11.2019.11897", "Teknik Informatika"))
-    tableModel.insertRow(1, arrayOf<Any>(Input_Nama.getText()))
-    // bounds posisi setiap variable frame 1
+    val button = JButton("Login")
     Input_Nim.bounds = Rectangle(155, 220, 200, 20)
-    Input_jurusan.bounds = Rectangle(155, 240, 200, 20)
-    Input_Nama.bounds = Rectangle(155, 260, 200, 20)
+    Input_Password.bounds = Rectangle(155, 250, 200, 20)
     button.bounds = Rectangle(155, 300, 200, 50)
-    label.bounds = Rectangle(240, 40, 200, 100)
-    //bounds posisi setiap variable frame 2
-    table.bounds = Rectangle(0, 100, 500, 500)
-    header_newframe1.bounds = Rectangle(200, 20, 200, 100)
-    print_nama.bounds = Rectangle(240, 40, 200, 100)
-    if (isisubmit.equals("A11.2019.11897")) {
-            button.addActionListener {
-            newframe.add(header_newframe1)
-            newframe.add(print_nama)
-            newframe.add(table)
-            newframe.isVisible = true
+        label.bounds = Rectangle(240, 40, 200, 100)
+    button.addActionListener {
+        if (Input_Password.text.equals("Admin") && Input_Nim.text.equals("A11.2019.11897")){
+            allframe=Table_frame()
+            allframe.all_popup()
         }
-}
-    //add frame 1
-    myframe.add(button)
-    myframe.add(Input_Nama)
+        else {
+           allframe=frame_notifikasi()
+            allframe.all_popup()
+        }
+    }
     myframe.add(label)
     myframe.add(Input_Nim)
-    myframe.add(Input_jurusan)
+    myframe.add(Input_Password)
+    myframe.add(button)
     myframe.isVisible=true
+}}
+fun main(){
+    var allframe = allframe()
+    allframe = login_page()
+    allframe.all_popup()
+
 }
-
-
 
